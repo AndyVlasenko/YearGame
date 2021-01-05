@@ -14,15 +14,6 @@ public class Cloud {
     private float size;
     private float time;
 
-    public float getRandomXPoint() {
-        float coef = 0.2f * MathUtils.sin(time) * size;
-        return MathUtils.random(position.x - texture.getWidth() / 2 * (size + coef), position.x + texture.getWidth() / 2 * (size + coef));
-    }
-
-    public float getYPoint() {
-        return position.y + texture.getHeight() / 2 * size * 0.3f;
-    }
-
     public Cloud() {
         if (texture == null) {
             texture = new Texture("cloud.png");
@@ -67,5 +58,14 @@ public class Cloud {
             speed = MathUtils.random(20.0f, 40.0f);
             size = MathUtils.random(0.3f, 0.6f);
         }
+    }
+
+    public float getRandomXPoint() {
+        float coef = 0.2f * MathUtils.sin(time) * size;
+        return MathUtils.random(position.x - texture.getWidth() / 2 * (size + coef), position.x + texture.getWidth() / 2 * (size + coef));
+    }
+
+    public float getYPoint() {
+        return position.y + texture.getHeight() / 2 * size * 0.3f;
     }
 }

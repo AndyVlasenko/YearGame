@@ -11,13 +11,17 @@ import com.badlogic.gdx.math.MathUtils;
 public class YearGame extends ApplicationAdapter {
     public static final int WIDTH = 640;
     public static final int HEIGHT = 800;
+
     private SpriteBatch batch;
     private PolygonSpriteBatch polygonSpriteBatch;
     private Snow[] flakes;
-    private Texture threadTexture;
-    private Texture edgeTexture;
     private Moon moon;
     private Cloud[] clouds;
+    private House house;
+    private Tree tree;
+
+    private Texture threadTexture;
+    private Texture edgeTexture;
 
     private PolygonSprite[] ground;
 
@@ -27,21 +31,26 @@ public class YearGame extends ApplicationAdapter {
         this.polygonSpriteBatch = new PolygonSpriteBatch();
         this.threadTexture = new Texture("thread.png");
         this.edgeTexture = new Texture("edge.png");
+
         this.clouds = new Cloud[10];
         for (int i = 0; i < clouds.length; i++) {
             clouds[i] = new Cloud();
         }
+
         this.flakes = new Snow[700];
         for (int i = 0; i < flakes.length; i++) {
             flakes[i] = new Snow(clouds);
         }
 
         this.moon = new Moon();
+        this.house = new House();
+        this.tree = new Tree();
+
         this.ground = new PolygonSprite[]{
                 generatePoygonSprite(300, 130, 0.1f),
                 generatePoygonSprite(240, 100, 0.3f),
                 generatePoygonSprite(180, 70, 0.7f),
-                generatePoygonSprite(130, 120, 1)
+                generatePoygonSprite(100, 10, 1)
         };
 
     }
@@ -57,28 +66,24 @@ public class YearGame extends ApplicationAdapter {
         batch.begin();
 
         polygonSpriteBatch.begin();
-        for (int i = 0; i < ground.length - 1; i++) {
+        for (int i = 0; i < ground.length ; i++) {
             ground[i].draw(polygonSpriteBatch);
         }
         polygonSpriteBatch.end();
 
         moon.render(batch, threadTexture);
+        house.render(batch);
+        tree.render(batch);
 
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-
         for (int i = 0; i < flakes.length; i++) {
             flakes[i].render(batch);
         }
-
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         for (int i = 0; i < clouds.length; i++) {
             clouds[i].render(batch, threadTexture);
         }
-
-        polygonSpriteBatch.begin();
-        ground[ground.length - 1].draw(polygonSpriteBatch);
-        polygonSpriteBatch.end();
 
         for (int i = 0; i < WIDTH / 25; i++) {
             batch.draw(edgeTexture, i * 25, -20);
